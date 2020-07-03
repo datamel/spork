@@ -1,0 +1,33 @@
+name: Release
+
+on:
+  # push:
+  #   branches: [ master ]
+  pull_request:
+    branches: [ master ]
+
+jobs:
+  test-release:
+    # The type of runner that the job will run on
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+    - name: Checkout repo
+      uses: actions/checkout@v2.3.1
+
+    - name: Configure git
+      run: |
+        git config --global user.name "github-actions[bot]"
+        git config --global user.email "41898282+github-actions[bot]@users.noreply.github.com"
+
+    - name: Write current date in foo.md
+      run: |
+        date_now=$(date '+%Y-%m-%d %H:%M:%S')
+        sed -i "s|<!-- ACTIONS.BIND: date -->|$date_now|" foo.md
+
+    - name: Commit & push
+      run : |
+        git remote -v
+        git commit -a -m "Write current date" -m "Workflow: ${{ github.workflow }}, run: ${{ github.run_number }}"
+        git push origin HEAD:${{ github.ref }}
+
