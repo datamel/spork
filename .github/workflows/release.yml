@@ -27,7 +27,6 @@ jobs:
 
     - name: Commit & push
       run : |
-        git remote -v
         git commit -a -m "Write current date" -m "Workflow: ${{ github.workflow }}, run: ${{ github.run_number }}"
-        git push origin HEAD:${{ github.ref }}
+        git push origin ${{ github.head_ref }}
 
