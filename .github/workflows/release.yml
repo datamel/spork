@@ -14,6 +14,10 @@ jobs:
     steps:
     - name: Checkout repo
       uses: actions/checkout@v2.3.1
+      with:
+        # For an on-PR workflow, it would normally checkout a merge commit of the PR branch
+        # into the base branch. Instead we want the tip of the PR branch:
+        ref: ${{ github.head_ref }}
 
     - name: Configure git
       run: |
@@ -22,9 +26,8 @@ jobs:
         echo " "
         git status
         echo " "
-        git checkout -b ${{ github.head_ref }}
-        echo " "
-        git status
+        git log --graph --oneline --decorate --all
+
 
     - name: Write current date in foo.md
       run: |
@@ -36,6 +39,6 @@ jobs:
         git commit -a -m "Write current date" -m "Workflow: ${{ github.workflow }}, run: ${{ github.run_number }}"
         echo " "
         git log --graph --oneline --decorate --all
-        # echo " "
-        # git push origin ${{ github.head_ref }}
+        echo " "
+        git push origin ${{ github.head_ref }}
 
