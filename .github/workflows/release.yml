@@ -19,14 +19,23 @@ jobs:
       run: |
         git config --global user.name "github-actions[bot]"
         git config --global user.email "41898282+github-actions[bot]@users.noreply.github.com"
+        echo " "
+        git status
+        echo " "
+        git checkout -b ${{ github.head_ref }}
+        echo " "
+        git status
 
     - name: Write current date in foo.md
       run: |
         date_now=$(date '+%Y-%m-%d %H:%M:%S')
         sed -i "s|<!-- ACTIONS.BIND: date -->|$date_now|" foo.md
 
-    - name: Commit & push
+    - name: Commit #& push
       run : |
         git commit -a -m "Write current date" -m "Workflow: ${{ github.workflow }}, run: ${{ github.run_number }}"
-        git push origin ${{ github.head_ref }}
+        echo " "
+        git log --graph --oneline --decorate --all
+        # echo " "
+        # git push origin ${{ github.head_ref }}
 
