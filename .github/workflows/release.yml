@@ -32,11 +32,14 @@ jobs:
     - name: Write current date in foo.md
       run: |
         date_now=$(date '+%Y-%m-%d %H:%M:%S' --utc)
-        sed -i "s|<!-- ACTIONS.BIND: date -->|$date_now|" foo.md
+        opening_span="<span actions:bind='release-date'>"
+        pattern="${opening_span}.*<\/span>"
+        replacement="${opening_span}Released ${date_now}<\/span>"
+        sed -i "0,/${pattern}/s//${replacement}/" foo.md
 
     - name: Commit & push
       run : |
-        git commit -S -a -m "Write current date" -m "Workflow: ${{ github.workflow }}, run: ${{ github.run_number }}"
+        git commit -a -m "Write current date" -m "Workflow: ${{ github.workflow }}, run: ${{ github.run_number }}"
         echo " "
         git log --graph --oneline --decorate --all
         echo " "

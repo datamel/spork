@@ -1,3 +1,3 @@
 ## Testing...
 
-Date of last workflow run: <!-- ACTIONS.BIND: date -->
+Version blah (<span actions:bind='release-date'>Upcoming, 2020_Q4?</span>)
